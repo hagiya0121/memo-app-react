@@ -22,6 +22,7 @@ export function App() {
 
   function onClickAdd() {
     setShowInput(true);
+    setInputText("");
   }
 
   function onChangeText(event) {
@@ -55,6 +56,12 @@ export function App() {
     setEditKey(key);
   }
 
+  function onClickDelete() {
+    localStorage.removeItem(editKey);
+    setMemos(memos.filter((memo) => memo.key !== editKey));
+    setShowInput(false);
+  }
+
   return (
     <>
       <ul>
@@ -75,8 +82,8 @@ export function App() {
             rows="20"
             onChange={onChangeText}
           ></textarea>
-          <button onClick={() => onClickEdit(editKey)}>編集</button>
-          <button>削除</button>
+          <button onClick={onClickEdit}>編集</button>
+          <button onClick={onClickDelete}>削除</button>
         </>
       )}
     </>
