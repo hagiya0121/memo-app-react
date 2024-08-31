@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export function App() {
   const [showInput, setShowInput] = useState(false);
   const [inputText, setInputText] = useState("");
-  const [memos, setMemos] = useState({});
+  const [memos, setMemos] = useState([]);
   const [editKey, setEditKey] = useState("");
 
   useEffect(() => {
@@ -11,13 +11,13 @@ export function App() {
   }, []);
 
   function getAllMemos() {
-    const memos = {};
+    const allMemos = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       const value = localStorage.getItem(key);
-      memos[key] = value;
+      allMemos.push({ key: key, value: value });
     }
-    return memos;
+    return allMemos;
   }
 
   function onClickAdd() {
@@ -31,35 +31,39 @@ export function App() {
   function onClickEdit() {
     if (editKey) {
       localStorage.setItem(editKey, inputText);
-      setMemos({
-        ...memos,
-        [editKey]: inputText,
+      const nextMemos = memos.map((memo) => {
+        if (memo.key === editKey) {
+          return { key: editKey, value: inputText };
+        } else {
+          return memo;
+        }
       });
+      setMemos(nextMemos);
       setEditKey("");
     } else {
       const time = new Date().toISOString();
       localStorage.setItem(time, inputText);
-      setMemos({
-        ...memos,
-        [time]: inputText,
-      });
+      setMemos([...memos, { key: time, value: inputText }]);
     }
     setInputText("");
     setShowInput(false);
   }
 
-  function onClickUpdate(key) {
+  function onClickUpdate(key, value) {
     setShowInput(true);
-    setInputText(memos[key]);
+    setInputText(value);
     setEditKey(key);
   }
 
   return (
     <>
       <ul>
-        {Object.keys(memos).map((key) => (
-          <li onClick={() => onClickUpdate(key)} key={key}>
-            {memos[key].split("\n")[0]}
+        {memos.map((memo) => (
+          <li
+            onClick={() => onClickUpdate(memo.key, memo.value)}
+            key={memo.key}
+          >
+            {memo.value}
           </li>
         ))}
         <li onClick={onClickAdd}>+</li>
@@ -71,7 +75,7 @@ export function App() {
             rows="20"
             onChange={onChangeText}
           ></textarea>
-          <button onClick={onClickEdit}>編集</button>
+          <button onClick={() => onClickEdit(editKey)}>編集</button>
           <button>削除</button>
         </>
       )}
