@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { IndexMemos } from "./IndexMemos";
+import { InputArea } from "./InputArea";
 
 export function App() {
   const [showInput, setShowInput] = useState(false);
@@ -7,18 +9,14 @@ export function App() {
   const [editKey, setEditKey] = useState("");
 
   useEffect(() => {
-    setMemos(getAllMemos());
-  }, []);
-
-  function getAllMemos() {
     const allMemos = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       const value = localStorage.getItem(key);
       allMemos.push({ key: key, value: value });
     }
-    return allMemos;
-  }
+    setMemos(allMemos);
+  }, []);
 
   function onClickAdd() {
     setShowInput(true);
@@ -32,25 +30,24 @@ export function App() {
   function onClickEdit() {
     if (editKey) {
       localStorage.setItem(editKey, inputText);
-      const nextMemos = memos.map((memo) => {
+      const newMemos = memos.map((memo) => {
         if (memo.key === editKey) {
           return { key: editKey, value: inputText };
         } else {
           return memo;
         }
       });
-      setMemos(nextMemos);
+      setMemos(newMemos);
       setEditKey("");
     } else {
       const time = new Date().toISOString();
       localStorage.setItem(time, inputText);
       setMemos([...memos, { key: time, value: inputText }]);
     }
-    setInputText("");
     setShowInput(false);
   }
 
-  function onClickUpdate(key, value) {
+  function onClickShow(key, value) {
     setShowInput(true);
     setInputText(value);
     setEditKey(key);
@@ -64,27 +61,18 @@ export function App() {
 
   return (
     <>
-      <ul>
-        {memos.map((memo) => (
-          <li
-            onClick={() => onClickUpdate(memo.key, memo.value)}
-            key={memo.key}
-          >
-            {memo.value}
-          </li>
-        ))}
-        <li onClick={onClickAdd}>+</li>
-      </ul>
+      <IndexMemos
+        memos={memos}
+        onClickShow={onClickShow}
+        onClickAdd={onClickAdd}
+      />
       {showInput && (
-        <>
-          <textarea
-            value={inputText}
-            rows="20"
-            onChange={onChangeText}
-          ></textarea>
-          <button onClick={onClickEdit}>編集</button>
-          <button onClick={onClickDelete}>削除</button>
-        </>
+        <InputArea
+          inputText={inputText}
+          onChangeText={onChangeText}
+          onClickEdit={onClickEdit}
+          onClickDelete={onClickDelete}
+        />
       )}
     </>
   );
