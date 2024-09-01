@@ -19,8 +19,12 @@ export function App() {
   }, []);
 
   function onClickAdd() {
+    const time = new Date().toISOString();
+    localStorage.setItem(time, "新規メモ");
+    setMemos([...memos, { key: time, value: "新規メモ" }]);
+    setEditKey(time);
     setShowInput(true);
-    setInputText("");
+    setInputText("新規メモ");
   }
 
   function onChangeText(event) {
@@ -30,20 +34,18 @@ export function App() {
   function onClickEdit() {
     if (editKey) {
       localStorage.setItem(editKey, inputText);
-      const newMemos = memos.map((memo) => {
-        if (memo.key === editKey) {
-          return { key: editKey, value: inputText };
-        } else {
-          return memo;
-        }
-      });
+      const newMemos = memos.map((memo) =>
+        memo.key === editKey ? { key: editKey, value: inputText } : memo
+      );
       setMemos(newMemos);
       setEditKey("");
-    } else {
-      const time = new Date().toISOString();
-      localStorage.setItem(time, inputText);
-      setMemos([...memos, { key: time, value: inputText }]);
+      setShowInput(false);
+      return;
     }
+
+    const time = new Date().toISOString();
+    localStorage.setItem(time, inputText);
+    setMemos([...memos, { key: time, value: inputText }]);
     setShowInput(false);
   }
 

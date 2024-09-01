@@ -4,7 +4,7 @@ export function IndexMemos(props) {
     <ul>
       {memos.map((memo) => (
         <li onClick={() => onClickShow(memo.key, memo.value)} key={memo.key}>
-          {memo.value}
+          {memo.value.split("\n")[0]}
         </li>
       ))}
       <li onClick={onClickAdd}>+</li>
