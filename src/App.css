@@ -1,0 +1,36 @@
+.main {
+  display: flex;
+}
+
+.memo-list {
+  color: blue;
+  list-style-type: none;
+}
+
+.memo-list li {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.memo-list li:last-child {
+  text-decoration: none;
+}
+
+.memo-list .selected {
+  color: black;
+  text-decoration: none;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.input-area button {
+  width: 100px;
+  margin: 5px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}

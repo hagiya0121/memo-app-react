@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { IndexMemos } from "./IndexMemos";
 import { InputArea } from "./InputArea";
+import "./App.css";
 
 export function App() {
   const [showInput, setShowInput] = useState(false);
@@ -19,10 +20,10 @@ export function App() {
   }, []);
 
   function onClickAdd() {
-    const time = new Date().toISOString();
-    localStorage.setItem(time, "新規メモ");
-    setMemos([...memos, { key: time, value: "新規メモ" }]);
-    setEditKey(time);
+    const key = new Date().toISOString();
+    localStorage.setItem(key, "新規メモ");
+    setMemos([...memos, { key: key, value: "新規メモ" }]);
+    setEditKey(key);
     setShowInput(true);
     setInputText("新規メモ");
   }
@@ -32,20 +33,12 @@ export function App() {
   }
 
   function onClickEdit() {
-    if (editKey) {
-      localStorage.setItem(editKey, inputText);
-      const newMemos = memos.map((memo) =>
-        memo.key === editKey ? { key: editKey, value: inputText } : memo
-      );
-      setMemos(newMemos);
-      setEditKey("");
-      setShowInput(false);
-      return;
-    }
-
-    const time = new Date().toISOString();
-    localStorage.setItem(time, inputText);
-    setMemos([...memos, { key: time, value: inputText }]);
+    localStorage.setItem(editKey, inputText);
+    const newMemos = memos.map((memo) =>
+      memo.key === editKey ? { key: editKey, value: inputText } : memo
+    );
+    setMemos(newMemos);
+    setEditKey("");
     setShowInput(false);
   }
 
@@ -62,9 +55,10 @@ export function App() {
   }
 
   return (
-    <>
+    <div className="main">
       <IndexMemos
         memos={memos}
+        editKey={editKey}
         onClickShow={onClickShow}
         onClickAdd={onClickAdd}
       />
@@ -76,6 +70,6 @@ export function App() {
           onClickDelete={onClickDelete}
         />
       )}
-    </>
+    </div>
   );
 }
