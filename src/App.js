@@ -10,12 +10,10 @@ export function App() {
   const [editKey, setEditKey] = useState("");
 
   useEffect(() => {
-    const allMemos = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = localStorage.getItem(key);
-      allMemos.push({ key: key, value: value });
-    }
+    const allMemos = Object.keys(localStorage).map((key) => ({
+      key: key,
+      value: localStorage.getItem(key),
+    }));
     setMemos(allMemos);
   }, []);
 
