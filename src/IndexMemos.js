@@ -1,5 +1,6 @@
 export function IndexMemos(props) {
   const { memos, editKey, onClickShow, onClickAdd } = props;
+  memos.sort((a, b) => a.value.localeCompare(b.value));
   return (
     <ul className="memo-list">
       {memos.map((memo) => (
