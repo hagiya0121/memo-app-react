@@ -33,7 +33,7 @@ export function App() {
   function onClickEdit() {
     localStorage.setItem(editKey, inputText);
     const newMemos = memos.map((memo) =>
-      memo.key === editKey ? { key: editKey, value: inputText } : memo
+      memo.key === editKey ? { key: editKey, value: inputText } : memo,
     );
     setMemos(newMemos);
     setEditKey("");
