@@ -4,7 +4,6 @@ import { InputArea } from "./InputArea";
 import "./App.css";
 
 export function App() {
-  const [showInput, setShowInput] = useState(false);
   const [inputText, setInputText] = useState("");
   const [memos, setMemos] = useState([]);
   const [editKey, setEditKey] = useState("");
@@ -22,7 +21,6 @@ export function App() {
     localStorage.setItem(key, "新規メモ");
     setMemos([...memos, { key: key, value: "新規メモ" }]);
     setEditKey(key);
-    setShowInput(true);
     setInputText("新規メモ");
   }
 
@@ -33,15 +31,13 @@ export function App() {
   function onClickEdit() {
     localStorage.setItem(editKey, inputText);
     const newMemos = memos.map((memo) =>
-      memo.key === editKey ? { key: editKey, value: inputText } : memo,
+      memo.key === editKey ? { key: editKey, value: inputText } : memo
     );
     setMemos(newMemos);
     setEditKey("");
-    setShowInput(false);
   }
 
   function onClickShow(key, value) {
-    setShowInput(true);
     setInputText(value);
     setEditKey(key);
   }
@@ -49,7 +45,7 @@ export function App() {
   function onClickDelete() {
     localStorage.removeItem(editKey);
     setMemos(memos.filter((memo) => memo.key !== editKey));
-    setShowInput(false);
+    setEditKey("");
   }
 
   return (
@@ -60,7 +56,7 @@ export function App() {
         onClickShow={onClickShow}
         onClickAdd={onClickAdd}
       />
-      {showInput && (
+      {editKey !== "" && (
         <InputArea
           inputText={inputText}
           onChangeText={onChangeText}
