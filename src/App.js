@@ -10,7 +10,7 @@ export function App() {
 
   useEffect(() => {
     const allMemos = Object.keys(localStorage).map((key) => ({
-      key: key,
+      key,
       value: localStorage.getItem(key),
     }));
     setMemos(allMemos);
@@ -19,7 +19,7 @@ export function App() {
   function onClickAdd() {
     const key = new Date().toISOString();
     localStorage.setItem(key, "新規メモ");
-    setMemos([...memos, { key: key, value: "新規メモ" }]);
+    setMemos([...memos, { key, value: "新規メモ" }]);
     setEditKey(key);
     setInputText("新規メモ");
   }

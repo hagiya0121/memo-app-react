@@ -5,7 +5,7 @@ export function IndexMemos(props) {
     <ul className="memo-list">
       {memos.map((memo) => (
         <li
-          className={editKey === memo.key ? "selected" : ""}
+          className={editKey === memo.key && "selected"}
           onClick={() => onClickShow(memo.key, memo.value)}
           key={memo.key}
         >
