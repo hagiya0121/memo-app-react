@@ -1,15 +1,17 @@
 export function IndexMemos(props) {
   const { memos, editKey, onClickShow, onClickAdd } = props;
-  memos.sort((a, b) => a.value.localeCompare(b.value));
+  const memoList = Object.entries(memos);
+  memoList.sort(([, valueA], [, valueB]) => valueA.localeCompare(valueB));
+
   return (
     <ul className="memo-list">
-      {memos.map((memo) => (
+      {memoList.map(([key, value]) => (
         <li
-          className={editKey === memo.key && "selected"}
-          onClick={() => onClickShow(memo.key, memo.value)}
-          key={memo.key}
+          className={editKey === key && "selected"}
+          onClick={() => onClickShow(key, value)}
+          key={key}
         >
-          {memo.value.split("\n")[0]}
+          {value.split("\n")[0]}
         </li>
       ))}
       <li onClick={onClickAdd}>+</li>
