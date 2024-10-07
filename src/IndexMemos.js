@@ -1,6 +1,10 @@
+import { useContext } from "react";
+import { loginContext } from "./loginContext.js";
+
 export function IndexMemos(props) {
   const { memos, editKey, onClickShow, onClickAdd } = props;
   const memoList = Object.entries(memos);
+  const isLogin = useContext(loginContext);
   memoList.sort(([, valueA], [, valueB]) => valueA.localeCompare(valueB));
 
   return (
@@ -14,7 +18,7 @@ export function IndexMemos(props) {
           {value.split("\n")[0]}
         </li>
       ))}
-      <li onClick={onClickAdd}>+</li>
+      {isLogin && <li onClick={onClickAdd}>+</li>}
     </ul>
   );
 }

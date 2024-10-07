@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { IndexMemos } from "./IndexMemos";
 import { InputArea } from "./InputArea";
+import { loginContext } from "./loginContext";
 import "./App.css";
 
 export function App() {
   const [inputText, setInputText] = useState("");
   const [memos, setMemos] = useState({});
   const [editKey, setEditKey] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+  const message = isLogin ? "ログアウト" : "ログイン";
 
   function saveMemos(newMemos) {
     localStorage.setItem("memos", JSON.stringify(newMemos));
@@ -50,22 +53,31 @@ export function App() {
     setEditKey("");
   }
 
+  function onClickButton() {
+    setIsLogin(!isLogin);
+  }
+
   return (
-    <div className="main">
-      <IndexMemos
-        memos={memos}
-        editKey={editKey}
-        onClickShow={onClickShow}
-        onClickAdd={onClickAdd}
-      />
-      {editKey !== "" && (
-        <InputArea
-          inputText={inputText}
-          onChangeText={onChangeText}
-          onClickEdit={onClickEdit}
-          onClickDelete={onClickDelete}
-        />
-      )}
-    </div>
+    <>
+      <button onClick={onClickButton}>{message}</button>
+      <div className="main">
+        <loginContext.Provider value={isLogin}>
+          <IndexMemos
+            memos={memos}
+            editKey={editKey}
+            onClickShow={onClickShow}
+            onClickAdd={onClickAdd}
+          />
+          {editKey !== "" && (
+            <InputArea
+              inputText={inputText}
+              onChangeText={onChangeText}
+              onClickEdit={onClickEdit}
+              onClickDelete={onClickDelete}
+            />
+          )}
+        </loginContext.Provider>
+      </div>
+    </>
   );
 }
