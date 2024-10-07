@@ -1,10 +1,9 @@
-import { useContext } from "react";
-import { loginContext } from "./loginContext.js";
+import { useLoginStatus } from "./useLoginStatus";
 
 export function IndexMemos(props) {
   const { memos, editKey, onClickShow, onClickAdd } = props;
   const memoList = Object.entries(memos);
-  const isLogin = useContext(loginContext);
+  const isLogin = useLoginStatus();
   memoList.sort(([, valueA], [, valueB]) => valueA.localeCompare(valueB));
 
   return (

@@ -53,13 +53,9 @@ export function App() {
     setEditKey("");
   }
 
-  function onClickButton() {
-    setIsLogin(!isLogin);
-  }
-
   return (
     <>
-      <button onClick={onClickButton}>{message}</button>
+      <button onClick={() => setIsLogin(!isLogin)}>{message}</button>
       <div className="main">
         <loginContext.Provider value={isLogin}>
           <IndexMemos

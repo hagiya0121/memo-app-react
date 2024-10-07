@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { loginContext } from "./loginContext.js";
+import { useLoginStatus } from "./useLoginStatus";
 
 export function InputArea(props) {
   const { inputText, onChangeText, onClickEdit, onClickDelete } = props;
-  const isLogin = useContext(loginContext);
+  const isLogin = useLoginStatus();
   return (
     <div className="input-area">
       <textarea value={inputText} rows="20" onChange={onChangeText}></textarea>
